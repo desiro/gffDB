@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Script: gffutilsBuild.py
+# Script: gff_to_db.py
 # Author: Daniel Desiro'
 """
 Description:
@@ -9,7 +9,7 @@ Usage:
     gff_to_db.py -g <gff_file> -d <database_file>
 
 Source:
-    https://raw.github.com/
+    https://github.com/desiro/gffDB/blob/master/gff_to_db.py
 
 """
 import os
@@ -21,15 +21,15 @@ import argparse
 
 def main(gffFile, dataBase, forceOv, backup, idSpec, mergeStrat, fieldKey):
     # creating a new database or adding to an excising one
-    if not os.path.isfile(dataBase) or forceOv:
+    if not os.path.isfile(dataBase) or forceOv is True:
         createDB(gffFile,dataBase,forceOv,idSpec,mergeStrat, fieldKey)
-    elif not forceOv and os.path.isfile(dataBase):
+    elif forceOv is False and os.path.isfile(dataBase):
         addToDB(gffFile,dataBase,idSpec,backup,mergeStrat, fieldKey)
 
 
 def createDB(gffFile, dataBase, forceOv, idSpec, mergeStrat, fieldKey):
     # creating id specification list
-    if fieldKey != 'none':
+    if fieldKey is not None:
         ids = ":" + fieldKey + ":"
     else:
         ids = re.split(r",*",idSpec)
@@ -40,7 +40,7 @@ def createDB(gffFile, dataBase, forceOv, idSpec, mergeStrat, fieldKey):
 
 def addToDB(gffFile, dataBase, idSpec, backup, mergeStrat, fieldKey):
     # creating id specification list
-    if fieldKey != 'none':
+    if fieldKey is not None:
         ids = ":" + fieldKey + ":"
     else:
         ids = re.split(r",*",idSpec)
@@ -60,8 +60,16 @@ if __name__ == '__main__':
     parser.add_argument('--backup', '-b', dest='backup', action='store_true', help='creates a backup before adding to the database')
     parser.add_argument('--idSpec', '-i', dest='idSpec', default='ID,Name,transcript_id,gene_id,evidence', help='a coma seperated list for the construction of the primary key, the first arguments will be prioritized')
     parser.add_argument('--merge', '-m', dest='mergeStrat', default='error', choices=['merge', 'create_unique', 'error', 'warning'], help='merge strategy for duplicates')
-    parser.add_argument('--fieldKey', '-k', dest='fieldKey', default='none', choices=['none', 'seqid', 'source', 'featuretype', 'start', 'end', 'score', 'strand', 'frame', 'attributes'], help='use GFF field value as primary key')
+    parser.add_argument('--fieldKey', '-k', dest='fieldKey', choices=['seqid', 'source', 'featuretype', 'start', 'end', 'score', 'strand', 'frame', 'attributes'], help='use GFF field value as primary key')
     
     options = parser.parse_args()
     main(options.gffFile, options.dataBase, options.forceOv, options.backup, options.idSpec, options.mergeStrat, options.fieldKey)
+
+
+# optional:
+# ---------
+# transform: The transform kwarg is a function that accepts single gffutils.Feature object 
+#            and that returns a (possibly modified) gffutils.Feature object. It is used to 
+#            modify, on-the-fly, items as they are being imported into the database. It is 
+#            generally used for files that don’t fit the standard GFF3 or GTF specs.
 
