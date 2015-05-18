@@ -51,8 +51,8 @@ def addToDB(gffFile, dataBase, idSpec, backup, mergeStrat, fieldKey):
 
 
 if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser(prog = 'gff_to_db.py', description = 'Create a database from a gff file or add to an excisting database.')
+    
+    parser = argparse.ArgumentParser(prog = 'gff_to_db.py', description='Create a database from a gff file or add to an excisting database.', prefix_chars='-+', epilog="")
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     parser.add_argument('--gff', '-g', dest='gffFile', required=True, help='GFF file')
     parser.add_argument('--database', '-d', dest='dataBase', required=True, help='name of the database')
@@ -71,5 +71,5 @@ if __name__ == '__main__':
 # transform: The transform kwarg is a function that accepts single gffutils.Feature object 
 #            and that returns a (possibly modified) gffutils.Feature object. It is used to 
 #            modify, on-the-fly, items as they are being imported into the database. It is 
-#            generally used for files that don’t fit the standard GFF3 or GTF specs.
+#            generally used for files that don't fit the standard GFF3 or GTF specs.
 

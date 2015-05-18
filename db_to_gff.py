@@ -149,22 +149,12 @@ def printData(db, data, gffFile, dataBase, all, features, fCount, fTypes, source
                     next(data)
                 except StopIteration:
                     pass
-            elif searchTuple is None and start is not None and within is False and (int(entry.end) <= int(start)):
+            elif searchTuple is None and start is not None and ((within is True and (int(entry.start) < int(start))) or (within is False and (int(entry.end) <= int(start)))):
                 try:
                     next(data)
                 except StopIteration:
                     pass
-            elif searchTuple is None and start is not None and within is True and (int(entry.start) < int(start)):
-                try:
-                    next(data)
-                except StopIteration:
-                    pass
-            elif searchTuple is None and end is not None and within is False and (int(entry.start) >= int(end)):
-                try:
-                    next(data)
-                except StopIteration:
-                    pass
-            elif searchTuple is None and end is not None and within is True and (int(entry.end) > int(end)):
+            elif searchTuple is None and end is not None and ((within is True and (int(entry.end) > int(end))) or (within is False and (int(entry.start) >= int(end)))):
                 try:
                     next(data)
                 except StopIteration:
@@ -180,7 +170,7 @@ def printData(db, data, gffFile, dataBase, all, features, fCount, fTypes, source
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(prog = 'db_to_gff.py', description = 'Get information from a gffutils database and create a new gff file.')
+    parser = argparse.ArgumentParser(prog = 'db_to_gff.py', description = 'Get information from a gffutils database and create a new gff file.', prefix_chars='-+', epilog="")
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     parser.add_argument('--gff', '-g', dest='gffFile', required=True, help='GFF file name')
     parser.add_argument('--database', '-d', dest='dataBase', required=True, help='the gffutils database')
