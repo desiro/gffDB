@@ -40,7 +40,7 @@ def main(gffFile, dataBase, all, features, fCount, fTypes, source, seqid, start,
         searchTuple = seqid + ':' + start + '-' + end
     
     # decides the main task
-    if all is True or (order is not None and searchTuple is None and (seqid is not None or start is not None or strand is not None)):
+    if all is True or (order is not None and searchTuple is None and (seqid is not None or start is not None or strand != 'none')):
         data = searchAll(db, searchTuple, strand, featureList, orderList, reverse, within)
     elif order is None and (seqid is not None or start is not None or end is not None):
         data = searchRegion(db, seqid, start, end, strand, featureList, within)
@@ -102,7 +102,7 @@ def printData(db, data, gffFile, dataBase, all, features, fCount, fTypes, source
             file.write("#     --start = " + start + "\n")
         if end is not None:
             file.write("#     --end = " + end + "\n")
-        if strand is not None:
+        if strand != 'none':
             file.write("#     --strand = " + strand + "\n")
         if order is not None:
             file.write("#     --order = " + order + "\n")
@@ -173,21 +173,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog = 'db_to_gff.py', description = 'Get information from a gffutils database and create a new gff file.', prefix_chars='-+', epilog="")
     parser.add_argument('--version', action='version', version='%(prog)s 0.1')
     parser.add_argument('--gff', '-g', dest='gffFile', required=True, help='GFF file name')
-    parser.add_argument('--database', '-d', dest='dataBase', required=True, help='the gffutils database')
+    parser.add_argument('--database', '-d', dest='dataBase', required=True, help='gffutils database')
     parser.add_argument('--all', '-a', dest='all', action='store_true', help='returns all db entries')
-    parser.add_argument('--features', '-f', dest='features', help='returns all entries with the requested features; can be a comma seperated list')
-    parser.add_argument('--fCount', '-fn', dest='fCount', help='returns the number occurences of the requested feature at the top of the gff file; use \'all\' for counting all features in the database')
-    parser.add_argument('--fTypes', '-ft', dest='fTypes', action='store_true', help='returns all featuretypes in the database at the top of the gff file')
+    parser.add_argument('--features', '-f', dest='features', help='returns all entries with the requested features; can be a comma separated list')
+    parser.add_argument('--fCount', '-fn', dest='fCount', help='returns the number occurrences of the requested feature at the top of the gff file; use \'all\' for counting all features in the database')
+    parser.add_argument('--fTypes', '-ft', dest='fTypes', action='store_true', help='returns all feature types in the database at the top of the gff file')
     parser.add_argument('--source', '-so', dest='source', help='returns features with the requested source')
     parser.add_argument('--seqid', '-sq', dest='seqid', help='returns features with the requested seqid')
     parser.add_argument('--start', '-s', dest='start', help='only returns features that start with this region or after this region')
     parser.add_argument('--end', '-e', dest='end', help='only returns features that end with this region or before this region')
     parser.add_argument('--notes', '-n', dest='notes', help='adds specific notes at the top of the gff file; provide the comment in quotation mark and use # for new line')
     parser.add_argument('--schema', '-sc', dest='schema', action='store_true', help='returns the schema of the database at the top of the gff file, this is also the default output when you do not specify anything')
-    parser.add_argument('--strand', '-r', dest='strand', choices=['+', '-', '.'], help='returns only featurse in strand direction; . returns unstranded features')
-    parser.add_argument('--order', '-o', dest='order', help='order results by fileds; musst be a comma seperated list of field names (seqid, source, featuretype, start, end, score, strand, frame, attributes, extra; could use excessive search time')
+    parser.add_argument('--strand', '-r', dest='strand', default='none', choices=['none', '+', '-', '.'], help='returns only features in strand direction; \'.\' returns unstranded features')
+    parser.add_argument('--order', '-o', dest='order', help='order results by fields; must be a comma separated list of field names (seqid, source, featuretype, start, end, score, strand, frame, attributes, extra); could slow down the search')
     parser.add_argument('--reverse', '-v', dest='reverse', action='store_true', help='sort in descending order; only use with --order option')
-    parser.add_argument('--within', '-w', dest='within', action='store_true', help='forces the feature to be completly within the provided --start and/or --end option')
+    parser.add_argument('--within', '-w', dest='within', action='store_true', help='forces the feature to be completely within the provided --start and/or --end option')
     
     options = parser.parse_args()
     main(options.gffFile, options.dataBase, options.all, options.features, options.fCount, options.fTypes, options.source, options.seqid, options.start, options.end, options.notes, options.schema, options.strand, options.order, options.reverse, options.within)

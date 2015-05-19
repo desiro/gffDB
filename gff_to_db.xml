@@ -1,59 +1,107 @@
-<tool id="gff_to_db.py" name="gff_to_db.py" version="%(prog)s 0.1">
-  <description>Create a database from a gff file or add to an excisting database.</description>
-  <stdio>
-    <exit_code level="fatal" range="1:"/>
-  </stdio>
-  <version_command>python gff_to_db.py --version</version_command>
-  <command interpreter="python"><![CDATA[gff_to_db.py 
-#if $gff and $gff is not None:
---gff $gff
-#end if
-
-#if $database and $database is not None:
---database $database
-#end if
-$forceOV
-$backup
-
-#if $idSpec and $idSpec is not None:
---idSpec $idSpec
-#end if
-
-#if $merge and $merge is not None:
---merge $merge
-#end if
-
-#if $fieldKey and $fieldKey is not None:
---fieldKey $fieldKey
-#end if
-> $default]]></command>
-  <inputs>
-    <param area="false" label="GFF file (--gff)" name="gff" type="text"/>
-    <param area="false" label="name of the database (--database)" name="database" type="text"/>
-    <param checked="false" label="forcefully overwrites an excisting database, else adds the data to it (--forceOV)" name="forceOV" type="boolean" truevalue="--forceOV" falsevalue=""/>
-    <param checked="false" label="creates a backup before adding to the database (--backup)" name="backup" type="boolean" truevalue="--backup" falsevalue=""/>
-    <param area="false" default="ID,Name,transcript_id,gene_id,evidence" label="a coma seperated list for the construction of the primary key, the first arguments will be prioritized (--idSpec)" name="idSpec" type="text"/>
-    <param label="merge strategy for duplicates (--merge)" name="merge">
-      <option value="merge">merge</option>
-      <option value="create_unique">create_unique</option>
-      <option value="warning">warning</option>
-      <option selected="true" value="error">error</option>
-    </param>
-    <param label="use GFF field value as primary key (--fieldKey)" name="fieldKey">
-      <option value="featuretype">featuretype</option>
-      <option value="end">end</option>
-      <option value="score">score</option>
-      <option value="start">start</option>
-      <option value="frame">frame</option>
-      <option value="source">source</option>
-      <option value="seqid">seqid</option>
-      <option value="attributes">attributes</option>
-      <option value="strand">strand</option>
-    </param>
-  </inputs>
-  <outputs>
-    <data format="txt" hidden="false" name="default"/>
-  </outputs>
-  <help><![CDATA[]]></help>
+<tool id="gff_to_db.py" name="A gff-file to gffutils-database converter" version="%(prog)s 0.1">
+    
+    <description>
+    <![CDATA[
+        Create a database from a gff file or add to an excisting database.
+    ]]>
+    </description>
+    
+    <requirements>
+        <requirement type="python-module">gffutils</requirement>
+    </requirements>
+    
+    <stdio>
+        <exit_code level="fatal" range="1:"/>
+    </stdio>
+    
+    <version_command>python gff_to_db.py --version</version_command>
+    
+    <command interpreter="python">
+    <![CDATA[
+      gff_to_db.py
+        #if $gff and $gff is not None:
+            --gff $gff
+        #end if
+        
+        #if $database and $database is not None:
+            --database $database
+        #end if
+        
+        $forceOV
+        $backup
+        
+        #if $idSpec and $idSpec is not None:
+            --idSpec $idSpec
+        #end if
+        
+        #if $merge and $merge is not None:
+            --merge $merge
+        #end if
+        
+        #if $fieldKey and $fieldKey is not None:
+            --fieldKey $fieldKey
+        #end if
+        
+    ]]>
+    </command>
+    
+    <inputs>
+        <param area="false" label="GFF file (--gff)" name="gff" type="text"/>
+        <param checked="false" label="forcefully overwrites an existing database; else adds the data to it (--forceOV)" name="forceOV" type="boolean" truevalue="--forceOV" falsevalue=""/>
+        <param checked="false" label="creates a backup before adding to the database (--backup)" name="backup" type="boolean" truevalue="--backup" falsevalue=""/>
+        <param area="false" default="ID,Name,transcript_id,gene_id,evidence" label="a comma separated list for the construction of the primary key, the first arguments will be prioritized (--idSpec)" name="idSpec" type="text"/>
+        <param label="merge strategy for duplicates (--merge)" name="merge" type="select">
+            <option value="merge">merge</option>
+            <option value="create_unique">create_unique</option>
+            <option value="warning">warning</option>
+            <option selected="true" value="error">error</option>
+        </param>
+        <param label="use GFF field value as primary key (--fieldKey)" name="fieldKey" type="select">
+            <option value="none">none</option>
+            <option value="featuretype">featuretype</option>
+            <option value="end">end</option>
+            <option value="score">score</option>
+            <option value="start">start</option>
+            <option value="frame">frame</option>
+            <option value="source">source</option>
+            <option value="seqid">seqid</option>
+            <option value="attributes">attributes</option>
+            <option value="strand">strand</option>
+        </param>
+    </inputs>
+    
+    <outputs>
+        <data name="database" format="db" label="database of ${tool.name} on ${on_string}" />
+    </outputs>
+    
+    <tests>
+        <test>
+            <param name="gff" value="FlyBase.gff" />
+            <param name="forceOV" value="True" />
+            <param name="merge" value="create_unique" />
+            <output name="database" file="FlyBase.db" />
+        </test>
+    </tests>
+    
+    <help>
+    <![CDATA[
+        **What it does**
+        
+        Create a database from a gff file or add to an excisting database.
+        
+    ]]>
+    </help>
+  
+    <citations>
+        <citation type="bibtex">
+            @ARTICLE{bgruening_galaxytools,
+                Author = {Björn Grüning, Cameron Smith, Torsten Houwaart, Nicola Soranzo, Eric Rasche},
+                keywords = {bioinformatics, ngs, galaxy, cheminformatics, rna},
+                title = {{Galaxy Tools - A collection of bioinformatics and cheminformatics tools for the Galaxy environment}},
+                url = {https://github.com/bgruening/galaxytools}
+            }
+        </citation>
+    </citations>
+    
 </tool>
 

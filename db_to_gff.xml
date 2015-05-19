@@ -1,84 +1,133 @@
-<tool id="db_to_gff.py" name="db_to_gff.py" version="%(prog)s 0.1">
-  <description>Get information from a gffutils database and create a new gff file.</description>
-  <stdio>
-    <exit_code level="fatal" range="1:"/>
-  </stdio>
-  <version_command>python db_to_gff.py --version</version_command>
-  <command interpreter="python"><![CDATA[db_to_gff.py 
-#if $gff and $gff is not None:
---gff $gff
-#end if
-
-#if $database and $database is not None:
---database $database
-#end if
-$all
-
-#if $features and $features is not None:
---features $features
-#end if
-
-#if $fCount and $fCount is not None:
---fCount $fCount
-#end if
-$fTypes
-
-#if $source and $source is not None:
---source $source
-#end if
-
-#if $seqid and $seqid is not None:
---seqid $seqid
-#end if
-
-#if $start and $start is not None:
---start $start
-#end if
-
-#if $end and $end is not None:
---end $end
-#end if
-
-#if $notes and $notes is not None:
---notes $notes
-#end if
-$schema
-
-#if $strand and $strand is not None:
---strand $strand
-#end if
-
-#if $order and $order is not None:
---order $order
-#end if
-$reverse
-$within
-> $default]]></command>
-  <inputs>
-    <param area="false" label="GFF file name (--gff)" name="gff" type="text"/>
-    <param area="false" label="the gffutils database (--database)" name="database" type="text"/>
-    <param checked="false" label="returns all db entries (--all)" name="all" type="boolean" truevalue="--all" falsevalue=""/>
-    <param area="false" label="returns all entries with the requested features; can be a comma seperated list (--features)" name="features" type="text"/>
-    <param area="false" label="returns the number occurences of the requested feature at the top of the gff file; use 'all' for counting all features in the database (--fCount)" name="fCount" type="text"/>
-    <param checked="false" label="returns all featuretypes in the database at the top of the gff file (--fTypes)" name="fTypes" type="boolean" truevalue="--fTypes" falsevalue=""/>
-    <param area="false" label="returns features with the requested source (--source)" name="source" type="text"/>
-    <param area="false" label="returns features with the requested seqid (--seqid)" name="seqid" type="text"/>
-    <param area="false" label="only returns features that start with this region or after this region (--start)" name="start" type="text"/>
-    <param area="false" label="only returns features that end with this region or before this region (--end)" name="end" type="text"/>
-    <param area="false" label="adds specific notes at the top of the gff file; provide the comment in quotation mark and use # for new line (--notes)" name="notes" type="text"/>
-    <param checked="false" label="returns the schema of the database at the top of the gff file, this is also the default output when you do not specify anything (--schema)" name="schema" type="boolean" truevalue="--schema" falsevalue=""/>
-    <param label="returns only featurse in strand direction; . returns unstranded features (--strand)" name="strand">
-      <option value="+">+</option>
-      <option value="-">-</option>
-      <option value=".">.</option>
-    </param>
-    <param area="false" label="order results by fileds; musst be a comma seperated list of field names (seqid, source, featuretype, start, end, score, strand, frame, attributes, extra; could use excessive search time (--order)" name="order" type="text"/>
-    <param checked="false" label="sort in descending order; only use with --order option (--reverse)" name="reverse" type="boolean" truevalue="--reverse" falsevalue=""/>
-    <param checked="false" label="forces the feature to be completly within the provided --start and/or --end option (--within)" name="within" type="boolean" truevalue="--within" falsevalue=""/>
-  </inputs>
-  <outputs>
-    <data format="txt" hidden="false" name="default"/>
-  </outputs>
-  <help><![CDATA[]]></help>
+<tool id="db_to_gff.py" name="A gffutils-database to gff-file converter" version="%(prog)s 0.1">
+    
+    <description>
+    <![CDATA[
+        Get information from a gffutils database and create a new gff file. 
+    ]]>
+    </description>
+    
+    <requirements>
+        <requirement type="python-module">gffutils</requirement>
+    </requirements>
+    
+    <stdio>
+        <exit_code level="fatal" range="1:"/>
+    </stdio>
+    
+    <version_command>python db_to_gff.py --version</version_command>
+    
+    <command interpreter="python">
+    <![CDATA[
+      db_to_gff.py 
+        #if $gff and $gff is not None:
+          --gff $gff
+        #end if
+        
+        #if $database and $database is not None:
+          --database $database
+        #end if
+        
+        $all
+        $reverse
+        $within
+        $schema
+        $fTypes
+        
+        #if $features and $features is not None:
+            --features $features
+        #end if
+        
+        #if $fCount and $fCount is not None:
+            --fCount $fCount
+        #end if
+        
+        #if $source and $source is not None:
+            --source $source
+        #end if
+        
+        #if $seqid and $seqid is not None:
+            --seqid $seqid
+        #end if
+        
+        #if $start and $start is not None:
+            --start $start
+        #end if
+        
+        #if $end and $end is not None:
+            --end $end
+        #end if
+        
+        #if $notes and $notes is not None:
+            --notes $notes
+        #end if
+        
+        #if $strand and $strand is not None:
+            --strand $strand
+        #end if
+        
+        #if $order and $order is not None:
+            --order $order
+        #end if
+        
+    ]]>
+    </command>
+    
+    <inputs>
+        <param area="false" label="gffutils database (--database)" name="database" type="text"/>
+        <param checked="false" label="returns all database entries (--all)" name="all" type="boolean" truevalue="--all" falsevalue=""/>
+        <param area="false" label="returns all entries with the requested features; can be a comma seperated list (--features)" name="features" type="text"/>
+        <param area="false" label="returns the number occurrences of the requested feature at the top of the gff file; use 'all' for counting all features in the database (--fCount)" name="fCount" type="text"/>
+        <param checked="false" label="returns all feature types in the database at the top of the gff file (--fTypes)" name="fTypes" type="boolean" truevalue="--fTypes" falsevalue=""/>
+        <param area="false" label="returns features with the requested source (--source)" name="source" type="text"/>
+        <param area="false" label="returns features with the requested seqid (--seqid)" name="seqid" type="text"/>
+        <param area="false" label="only returns features that start with this region or after this region (--start)" name="start" type="text"/>
+        <param area="false" label="only returns features that end with this region or before this region (--end)" name="end" type="text"/>
+        <param area="false" label="adds specific notes at the top of the gff file; provide the comment in quotation mark and use # for a new line (--notes)" name="notes" type="text"/>
+        <param checked="false" label="returns the schema of the database at the top of the gff file; this is also the default output when you do not specify anything (--schema)" name="schema" type="boolean" truevalue="--schema" falsevalue=""/>
+        <param label="returns only features in strand direction; '.' returns unstranded features (--strand)" name="strand" type="select">
+            <option value="none">none</option>
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value=".">.</option>
+        </param>
+        <param area="false" label="order results by fields; must be a comma separated list of field names (seqid, source, featuretype, start, end, score, strand, frame, attributes, extra); could slow down the search (--order)" name="order" type="text"/>
+        <param checked="false" label="sort in descending order; only use with --order option (--reverse)" name="reverse" type="boolean" truevalue="--reverse" falsevalue=""/>
+        <param checked="false" label="forces the feature to be completely within the provided --start and/or --end option (--within)" name="within" type="boolean" truevalue="--within" falsevalue=""/>
+    </inputs>
+    
+    <outputs>
+        <data name="gff" format="gff" label="GFF data of ${tool.name} on ${on_string}" />
+    </outputs>
+    
+    <tests>
+        <test>
+            <param name="database" value="FlyBase.db" />
+            <param name="all" value="True" />
+            <param name="fTypes" value="True" />
+            <param name="fCount" value="all" />
+            <output name="gff" file="FlyBaseQuery.gff" />
+        </test>
+    </tests>
+    
+    <help>
+    <![CDATA[
+        **What it does**
+        
+        Get information from a gffutils database and create a new gff file.
+        
+    ]]>
+    </help>
+    
+    <citations>
+        <citation type="bibtex">
+            @ARTICLE{bgruening_galaxytools,
+                Author = {Björn Grüning, Cameron Smith, Torsten Houwaart, Nicola Soranzo, Eric Rasche},
+                keywords = {bioinformatics, ngs, galaxy, cheminformatics, rna},
+                title = {{Galaxy Tools - A collection of bioinformatics and cheminformatics tools for the Galaxy environment}},
+                url = {https://github.com/bgruening/galaxytools}
+            }
+        </citation>
+    </citations>
+    
 </tool>
 
