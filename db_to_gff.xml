@@ -73,7 +73,7 @@
     </command>
     
     <inputs>
-        <param area="false" label="gffutils database (--database)" name="database" type="text"/>
+        <param area="false" label="gffutils database (--database)" name="database" type="data"/>
         <param checked="false" label="returns all database entries (--all)" name="all" type="boolean" truevalue="--all" falsevalue=""/>
         <param area="false" label="returns all entries with the requested features; can be a comma seperated list (--features)" name="features" type="text"/>
         <param area="false" label="returns the number occurrences of the requested feature at the top of the gff file; use 'all' for counting all features in the database (--fCount)" name="fCount" type="text"/>

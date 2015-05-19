@@ -46,7 +46,7 @@
     </command>
     
     <inputs>
-        <param area="false" label="GFF file (--gff)" name="gff" type="text"/>
+        <param area="false" label="GFF file (--gff)" name="gff" type="data"/>
         <param checked="false" label="forcefully overwrites an existing database; else adds the data to it (--forceOV)" name="forceOV" type="boolean" truevalue="--forceOV" falsevalue=""/>
         <param checked="false" label="creates a backup before adding to the database (--backup)" name="backup" type="boolean" truevalue="--backup" falsevalue=""/>
         <param area="false" default="ID,Name,transcript_id,gene_id,evidence" label="a comma separated list for the construction of the primary key, the first arguments will be prioritized (--idSpec)" name="idSpec" type="text"/>
@@ -71,7 +71,7 @@
     </inputs>
     
     <outputs>
-        <data name="database" format="db" label="database of ${tool.name} on ${on_string}" />
+        <data name="database" format="sqlite" label="database of ${tool.name} on ${on_string}" />
     </outputs>
     
     <tests>
