@@ -1,4 +1,4 @@
-<tool id="db_to_gff.py" name="A gffutils-database to gff-file converter" version="%(prog)s 0.1">
+<tool id="db_to_gff" name="Database to gff" version="%(prog)s 0.1">
     
     <description>
     <![CDATA[
@@ -7,17 +7,18 @@
     </description>
     
     <requirements>
-        <requirement type="python-module">gffutils</requirement>
+        <requirement type="python-module" > gffutils </requirement>
     </requirements>
     
     <stdio>
         <exit_code level="fatal" range="1:"/>
     </stdio>
     
-    <version_command>python db_to_gff.py --version</version_command>
+    <version_command> python db_to_gff.py --version </version_command>
     
     <command interpreter="python">
     <![CDATA[
+        
       db_to_gff.py 
         #if $gff and $gff is not None:
           --gff $gff
@@ -27,72 +28,72 @@
           --database $database
         #end if
         
-        $all
-        $reverse
-        $within
-        $schema
-        $fTypes
-        
-        #if $features and $features is not None:
-            --features $features
-        #end if
-        
-        #if $fCount and $fCount is not None:
-            --fCount $fCount
-        #end if
-        
         #if $source and $source is not None:
             --source $source
         #end if
         
-        #if $seqid and $seqid is not None:
-            --seqid $seqid
+        #if $task_selector.selections == "--all":
+            $task_selector.selections
         #end if
         
-        #if $start and $start is not None:
-            --start $start
+        #if $task_selector.selections == "single_search":
+            #if $features and $features is not None:
+                --features $features
+            #end if
+            
+            #if $seqid and $seqid is not None:
+                --seqid $seqid
+            #end if
+            
+            #if $start and $start is not None:
+                --start $start
+            #end if
+            
+            #if $end and $end is not None:
+                --end $end
+            #end if
+            
+            #if $strand and $strand is not None:
+                --strand $strand
+            #end if
+            
+            $within
         #end if
         
-        #if $end and $end is not None:
-            --end $end
-        #end if
-        
-        #if $notes and $notes is not None:
-            --notes $notes
-        #end if
-        
-        #if $strand and $strand is not None:
-            --strand $strand
-        #end if
-        
-        #if $order and $order is not None:
-            --order $order
+        #if $task_selector.selections == "batch_search":
+            #if $batch_file and $batch_file is not None:
+                --batch $batch_file
+            #end if
         #end if
         
     ]]>
     </command>
     
     <inputs>
-        <param area="false" label="gffutils database (--database)" name="database" type="data"/>
-        <param checked="false" label="returns all database entries (--all)" name="all" type="boolean" truevalue="--all" falsevalue=""/>
-        <param area="false" label="returns all entries with the requested features; can be a comma seperated list (--features)" name="features" type="text"/>
-        <param area="false" label="returns the number occurrences of the requested feature at the top of the gff file; use 'all' for counting all features in the database (--fCount)" name="fCount" type="text"/>
-        <param checked="false" label="returns all feature types in the database at the top of the gff file (--fTypes)" name="fTypes" type="boolean" truevalue="--fTypes" falsevalue=""/>
-        <param area="false" label="returns features with the requested source (--source)" name="source" type="text"/>
-        <param area="false" label="returns features with the requested seqid (--seqid)" name="seqid" type="text"/>
-        <param area="false" label="only returns features that start with this region or after this region (--start)" name="start" type="text"/>
-        <param area="false" label="only returns features that end with this region or before this region (--end)" name="end" type="text"/>
-        <param area="false" label="adds specific notes at the top of the gff file; provide the comment in quotation mark and use # for a new line (--notes)" name="notes" type="text"/>
-        <param checked="false" label="returns the schema of the database at the top of the gff file; this is also the default output when you do not specify anything (--schema)" name="schema" type="boolean" truevalue="--schema" falsevalue=""/>
-        <param label="returns only features in strand direction; '.' returns unstranded features (--strand)" name="strand" type="select">
-            <option value="none">none</option>
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value=".">.</option>
-        </param>
-        <param area="false" label="order results by fields; must be a comma separated list of field names (seqid, source, featuretype, start, end, score, strand, frame, attributes, extra); could slow down the search (--order)" name="order" type="text"/>
-        <param checked="false" label="sort in descending order; only use with --order option (--reverse)" name="reverse" type="boolean" truevalue="--reverse" falsevalue=""/>
-        <param checked="false" label="forces the feature to be completely within the provided --start and/or --end option (--within)" name="within" type="boolean" truevalue="--within" falsevalue=""/>
+        <param name="database" type="data" format="gff" help="(--database)" label="Gffutils database" />
+        <param name="source" type="text" help="(--source)" label="Only return features with this source" />
+        <conditional name="task_selector">
+            <param name="selections" type="select" label="Select query task." >
+                <option value="--all" selected="True" > Request whole database </option>
+                <option value="single_search" > Single database search </option>
+                <option value="batch_search" > Batch database search </option>
+            </param>
+            <when value="single_search">
+                <param name="features" type="text" help="(--features)" label="Only search for these features; can be a comma separated list" />
+                <param name="seqid" type="text" help="(--seqid)" label="Only search for features with this sequence id" />
+                <param name="start" type="text" help="(--start)" label="Only search for features that start with or after this region" />
+                <param name="end" type="text" help="(--end)" label="Only search for features that end with or before this region" />
+                <param name="strand" type="select" optional="True" help="(--strand)" label="Only search for features in strand direction; '.' returns unstranded features" >
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value=".">.</option>
+                </param>
+                <param name="within" type="boolean" checked="false" truevalue="--within" falsevalue="" help="(--within)" label="Only search for features completely within start and/or end region" />
+            </when>
+            <when value="batch_search">
+                <param name="batch_file" type="data" format="tabular" help="(--batch)" label="Tabular file with search data; format: feature - seqid - start - end - strand - within; values can be empty; always provide 5 tabs; use t/T/true/True/w/within for within, let it empty or something else for not within)" />
+            </when>
+        </conditional>
     </inputs>
     
     <outputs>
@@ -102,9 +103,6 @@
     <tests>
         <test>
             <param name="database" value="FlyBase.db" />
-            <param name="all" value="True" />
-            <param name="fTypes" value="True" />
-            <param name="fCount" value="all" />
             <output name="gff" file="FlyBaseQuery.gff" />
         </test>
     </tests>

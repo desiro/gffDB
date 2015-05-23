@@ -1,4 +1,4 @@
-<tool id="gff_to_db.py" name="A gff-file to gffutils-database converter" version="%(prog)s 0.1">
+<tool id="gff_to_db" name="GFF to database" version="%(prog)s 0.1">
     
     <description>
     <![CDATA[
@@ -16,70 +16,46 @@
     
     <version_command>python gff_to_db.py --version</version_command>
     
-    <command interpreter="python">
+    <command>
     <![CDATA[
-      gff_to_db.py
-        #if $gff and $gff is not None:
-            --gff $gff
+        
+        #if $input_database and $input_database not None:
+            cp $input_database ./new.sqlite
+            &&
         #end if
         
-        #if $database and $database is not None:
-            --database $database
-        #end if
-        
-        $forceOV
-        $backup
-        
-        #if $idSpec and $idSpec is not None:
-            --idSpec $idSpec
-        #end if
-        
-        #if $merge and $merge is not None:
-            --merge $merge
-        #end if
-        
-        #if $fieldKey and $fieldKey is not None:
-            --fieldKey $fieldKey
+        $__tool_directory__/gff_to_db.py
+            #if $gff and $gff is not None:
+                --gff $gff
+            #end if
+            
+            #if $input_database and $input_database is not None:
+                --input_db ./new.sqlite
+            #else
+                --new_db $output_database
+            #end if
+            
+        #if $input_database and $input_database not None:
+            &&
+            cp ./new.sqlite $output_database;
         #end if
         
     ]]>
     </command>
     
     <inputs>
-        <param area="false" label="GFF file (--gff)" name="gff" type="data"/>
-        <param checked="false" label="forcefully overwrites an existing database; else adds the data to it (--forceOV)" name="forceOV" type="boolean" truevalue="--forceOV" falsevalue=""/>
-        <param checked="false" label="creates a backup before adding to the database (--backup)" name="backup" type="boolean" truevalue="--backup" falsevalue=""/>
-        <param area="false" default="ID,Name,transcript_id,gene_id,evidence" label="a comma separated list for the construction of the primary key, the first arguments will be prioritized (--idSpec)" name="idSpec" type="text"/>
-        <param label="merge strategy for duplicates (--merge)" name="merge" type="select">
-            <option value="merge">merge</option>
-            <option value="create_unique">create_unique</option>
-            <option value="warning">warning</option>
-            <option selected="true" value="error">error</option>
-        </param>
-        <param label="use GFF field value as primary key (--fieldKey)" name="fieldKey" type="select">
-            <option value="none">none</option>
-            <option value="featuretype">featuretype</option>
-            <option value="end">end</option>
-            <option value="score">score</option>
-            <option value="start">start</option>
-            <option value="frame">frame</option>
-            <option value="source">source</option>
-            <option value="seqid">seqid</option>
-            <option value="attributes">attributes</option>
-            <option value="strand">strand</option>
-        </param>
+        <param name="gff" type="data" format="gff" help="(--gff)" label="Input GFF file" />
+        <param name="input_database" optional="True" type="data" format="sqlite" help="(--input_db)" label="Input database (optional)" />
     </inputs>
     
     <outputs>
-        <data name="database" format="sqlite" label="database of ${tool.name} on ${on_string}" />
+        <data name="output_database" format="sqlite" label="database of ${tool.name} on ${on_string}" />
     </outputs>
     
     <tests>
         <test>
             <param name="gff" value="FlyBase.gff" />
-            <param name="forceOV" value="True" />
-            <param name="merge" value="create_unique" />
-            <output name="database" file="FlyBase.db" />
+            <output name="output_database" file="FlyBase.db" compare="sim_size" />
         </test>
     </tests>
     
