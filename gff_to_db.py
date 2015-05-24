@@ -32,7 +32,7 @@ def addToDB(gffFile, inputDB):
     except:
         print("can't open input database")
     try:
-        db.update(gffFile, id_spec=':source:', merge_strategy='create_unique')
+        db.update(gffFile, make_backup=False, id_spec=':source:', merge_strategy='create_unique')
     except:
         print("can't add files to database; source key is already in use; please change the source description with the \'gff_source_editing\' tool")
 
