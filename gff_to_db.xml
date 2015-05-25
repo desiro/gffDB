@@ -8,7 +8,6 @@
     
     <requirements>
         <requirement type="python-module">gffutils</requirement>
-        <requirement type="python-module">argparse</requirement>
     </requirements>
     
     <stdio>
@@ -21,24 +20,24 @@
     <![CDATA[
         
         #if $input_database and $input_database is not None:
-            cp $input_database ./new.sqlite
+            cp "$input_database" ./new.sqlite
             &&
         #end if
         
         python $__tool_directory__/gff_to_db.py
             #if $gff and $gff is not None:
-                --gff $gff
+                --gff "$gff"
             #end if
             
             #if $input_database and $input_database is not None:
                 --input_database ./new.sqlite
             #else
-                --new_database $output_database
+                --new_database "$output_database"
             #end if
             
         #if $input_database and $input_database is not None:
             &&
-            cp ./new.sqlite $output_database;
+            cp ./new.sqlite "$output_database";
         #end if
         
     ]]>
@@ -76,7 +75,7 @@ For the construction of this databases it uses the python module gffutils_.
 
 The input file has to be a GFF file.
 If only given a GFF file, the tool will create a new database.
-If additionaly given a database, the tool will add the GFF data to this database.
+If additionally given a database, the tool will add the GFF data to this database.
 
 .. class:: warningmark
 

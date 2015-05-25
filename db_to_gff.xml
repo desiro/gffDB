@@ -8,7 +8,6 @@
     
     <requirements>
         <requirement type="python-module" > gffutils </requirement>
-        <requirement type="python-module">argparse</requirement>
     </requirements>
     
     <stdio>
@@ -22,15 +21,15 @@
         
       db_to_gff.py 
         #if $gff and $gff is not None:
-          --gff $gff
+          --gff "$gff"
         #end if
         
         #if $database and $database is not None:
-          --database $database
+          --database "$database"
         #end if
         
         #if $source and $source is not None:
-            --source $source
+            --source "$source"
         #end if
         
         #if $task_selector.selections == "--all":
@@ -40,19 +39,19 @@
         #if $task_selector.selections == "single_search":
             
             #if $task_selector.seqid and $task_selector.seqid is not None:
-                --seqid $task_selector.seqid
+                --seqid "$task_selector.seqid"
             #end if
             
             #if $task_selector.features and $task_selector.features is not None:
-                --features $task_selector.features
+                --features "$task_selector.features"
             #end if
             
             #if $task_selector.start and $task_selector.start is not None:
-                --start $task_selector.start
+                --start "$task_selector.start"
             #end if
             
             #if $task_selector.end and $task_selector.end is not None:
-                --end $task_selector.end
+                --end "$task_selector.end"
             #end if
             
             #if $task_selector.strand and $task_selector.strand is not None:
@@ -64,7 +63,7 @@
         
         #if $task_selector.selections == "batch_search":
             #if $batch_file and $batch_file is not None:
-                --batch $batch_file
+                --batch "$batch_file"
             #end if
         #end if
         

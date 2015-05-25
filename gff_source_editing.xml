@@ -7,7 +7,6 @@
     </description>
     
     <requirements>
-        <requirement type="python-module">argparse</requirement>
     </requirements>
     
     <stdio>
@@ -21,15 +20,15 @@
         
       gff_source_editing.py 
         #if $old_gff and $old_gff is not None:
-            --old_gff $old_gff
+            --old_gff "$old_gff"
         #end if
         
         #if $new_gff and $new_gff is not None:
-            --new_gff $new_gff
+            --new_gff "$new_gff"
         #end if
         
         #if $string and $string is not None:
-            --string $string
+            --string "$string"
         #end if
         
         $add
@@ -62,7 +61,7 @@
 **Overview**
 
 Gff_source_editing is designed to manipulate the source data of a GFF file to prepare it for the gff_to_db tool.
-The gff_to_db tool will use this new source as primary key. Therefore it has to be distinkt from other source entries in the database.
+The gff_to_db tool will use this new source as primary key. Therefore it has to be distinct from other source entries in the database.
 You can use db_to_gff and check if a source string is already in use.
 It can add a string to the source data or replace the whole source data with a new string.
 
