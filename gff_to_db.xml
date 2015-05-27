@@ -55,7 +55,7 @@
     <tests>
         <test>
             <param name="gff" value="FlyBase.gff" />
-            <output name="output_database" file="FlyBase.db" compare="sim_size" />
+            <output name="output_database" file="FlyBase.sqlite" compare="sim_size" />
         </test>
     </tests>
     

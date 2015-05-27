@@ -38,7 +38,7 @@
     
     <inputs>
         <param name="old_gff" type="data" format="gff" label="Input GFF file" help="(--old_gff)" />
-        <param name="string" type="text" label="Source string" help="(--string) This string will be added to or replace the source data." />
+        <param name="string" type="text" label="Source string" help="(--string) This string will be added to or replace the source data. Can't contain any whitespace character or similar." />
         <param name="add" type="boolean" checked="true" truevalue="--add" falsevalue="" label="Add source string" help="(--add) Replace or add source string." />
     </inputs>
     

@@ -62,8 +62,8 @@
         #end if
         
         #if $task_selector.selections == "batch_search":
-            #if $batch_file and $batch_file is not None:
-                --batch "$batch_file"
+            #if $task_selector.batch_file and $task_selector.batch_file is not None:
+                --batch "$task_selector.batch_file"
             #end if
         #end if
         
@@ -103,8 +103,26 @@
     
     <tests>
         <test>
-            <param name="database" value="FlyBase.db" />
-            <output name="gff" file="FlyBaseQuery.gff" />
+            <param name="database" value="FlyBase.sqlite" />
+            <output name="gff" file="FlyBaseQuery_all.gff" />
+        </test>
+        <test>
+            <param name="database" value="FlyBase.sqlite" />
+            <param name="selections" value="batch_search" />
+            <param name="batch_file" value="FlyBaseBatch.txt" />
+            <output name="gff" file="FlyBaseQuery_batch.gff" />
+        </test>
+        <test>
+            <param name="database" value="FlyBase.sqlite" />
+            <param name="source" value="FlyBase" />
+            <param name="selections" value="single_search" />
+            <param name="seqid" value="2L" />
+            <param name="features" value="intron" />
+            <param name="start" value="7529" />
+            <param name="end" value="9484" />
+            <param name="strand" value="+" />
+            <param name="within" value="true" />
+            <output name="gff" file="FlyBaseQuery_single.gff" />
         </test>
     </tests>
     

@@ -15,6 +15,7 @@ Source:
 import os
 import gffutils
 import argparse
+import sys
 
 
 def main(gffFile, inputDB, newDB):
