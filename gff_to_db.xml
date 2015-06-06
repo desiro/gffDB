@@ -1,4 +1,4 @@
-<tool id="gff_to_db" name="GFF to database" version="%(prog)s 0.1">
+<tool id="gff_to_db" name="GFF to database" version="@VERSION@">
     
     <description>
     <![CDATA[
@@ -6,13 +6,11 @@
     ]]>
     </description>
     
-    <requirements>
-        <requirement type="python-module">gffutils</requirement>
-    </requirements>
-    
-    <stdio>
-        <exit_code level="fatal" range="1:"/>
-    </stdio>
+    <macros>
+        <import>gff_sqlite_tool_macros.xml</import>
+    </macros>
+    <expand macro="requirements" />
+    <expand macro="stdio" />
     
     <version_command>python gff_to_db.py --version</version_command>
     
@@ -101,19 +99,12 @@ The standalone, command-line version of gff_to_db uses the following parameters:
         --new_database      [new database file name]
         --version           version number
 
+@CITATION@
+
 ]]>
     </help>
-  
-    <citations>
-        <citation type="bibtex">
-            @ARTICLE{bgruening_galaxytools,
-                Author = {Björn Grüning, Cameron Smith, Torsten Houwaart, Nicola Soranzo, Eric Rasche},
-                keywords = {bioinformatics, ngs, galaxy, cheminformatics, rna},
-                title = {{Galaxy Tools - A collection of bioinformatics and cheminformatics tools for the Galaxy environment}},
-                url = {https://github.com/bgruening/galaxytools}
-            }
-        </citation>
-    </citations>
+    
+    <expand macro="citations"/>
     
 </tool>
 

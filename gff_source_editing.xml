@@ -1,4 +1,4 @@
-<tool id="gff_source_editing" name="GFF source editing" version="%(prog)s 0.1">
+<tool id="gff_source_editing" name="GFF source editing" version="@VERSION@">
     
     <description>
     <![CDATA[
@@ -6,12 +6,11 @@
     ]]>
     </description>
     
-    <requirements>
-    </requirements>
-    
-    <stdio>
-        <exit_code level="fatal" range="1:"/>
-    </stdio>
+    <macros>
+        <import>gff_sqlite_tool_macros.xml</import>
+    </macros>
+    <expand macro="requirements" />
+    <expand macro="stdio" />
     
     <version_command>python gff_source_editing.py --version</version_command>
     
@@ -38,7 +37,9 @@
     
     <inputs>
         <param name="old_gff" type="data" format="gff" label="Input GFF file" help="(--old_gff)" />
-        <param name="string" type="text" label="Source string" help="(--string) This string will be added to or replace the source data. Can't contain any whitespace character or similar." />
+        <param name="string" type="text" label="Source string" help="(--string) This string will be added to or replace the source data. Can't contain any whitespace character or similar." >
+            <expand macro="sanitize_query" />
+        </param>
         <param name="add" type="boolean" checked="true" truevalue="--add" falsevalue="" label="Add source string" help="(--add) Replace or add source string." />
     </inputs>
     
@@ -89,19 +90,12 @@ The standalone, command-line version of gff_source_editing uses the following pa
         --add       add the string to the source
         --version   version number
 
+@CITATION@
+
 ]]>
     </help>
     
-    <citations>
-        <citation type="bibtex">
-            @ARTICLE{bgruening_galaxytools,
-                Author = {Björn Grüning, Cameron Smith, Torsten Houwaart, Nicola Soranzo, Eric Rasche},
-                keywords = {bioinformatics, ngs, galaxy, cheminformatics, rna},
-                title = {{Galaxy Tools - A collection of bioinformatics and cheminformatics tools for the Galaxy environment}},
-                url = {https://github.com/bgruening/galaxytools}
-            }
-        </citation>
-    </citations>
+    <expand macro="citations"/>
     
 </tool>
 
