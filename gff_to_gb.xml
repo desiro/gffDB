@@ -1,0 +1,95 @@
+<tool id="gff_to_gb" name="GFF to GenBank converter" version="@VERSION@">
+    
+    <description>
+    <![CDATA[
+        Convert a GFF and corresponding fasta file into GenBank format.
+    ]]>
+    </description>
+    
+    <macros>
+        <import>gff_sqlite_tool_macros.xml</import>
+    </macros>
+    <expand macro="requirements" />
+    <expand macro="stdio" />
+    
+    <version_command>python gff_to_gb.py --version</version_command>
+    
+    <command interpreter="python">
+    <![CDATA[
+        
+      gff_to_gb.py 
+        #if $gff_in and $gff_in is not None:
+            --gff "$gff_in"
+        #end if
+        
+        #if $fasta_in and $fasta_in is not None:
+            --fasta "$fasta_in"
+        #end if
+        
+        #if $genBank_out and $genBank_out is not None:
+            --genbank "$genBank_out"
+        #end if
+        
+    ]]>
+    </command>
+    
+    <inputs>
+        <param name="gff_in" type="data" format="gff" label="Input GFF file" help="(--gffFile)" />
+        <param name="fasta_in" type="data" format="fasta" label="Input fasta file" help="(--fastaFile) Should be associated with the GFF file." />
+    </inputs>
+    
+    <outputs>
+        <data name="genBank_out" format="genbank" label="GenBank data of ${tool.name} on ${on_string}" />
+    </outputs>
+    
+    <tests>
+        <test>
+            <param name="gff_in" value="FlyBase.gff" />
+            <param name="fasta_in" value="FlyBase.fna" />
+            <output name="genBank_out" file="FlyBase.gbk" />
+        </test>
+    </tests>
+    
+    <help>
+<![CDATA[
+
+**Overview**
+
+Gff_source_editing is designed to manipulate the source data of a GFF file to prepare it for the gff_to_db tool.
+The gff_to_db tool will use this new source as primary key. Therefore it has to be distinct from other source entries in the database.
+You can use db_to_gff and check if a source string is already in use.
+It can add a string to the source data or replace the whole source data with a new string.
+
+------
+
+**Input**
+
+The input file has to be a GFF file.
+
+------
+
+**Output**
+
+The output will be a GFF file.
+
+------
+
+**gff_source_editing parameter list**
+
+The standalone, command-line version of gff_source_editing uses the following parameters::
+
+        --old_gff   [input GFF file name {gff}]
+        --new_gff   [output GFF file name {gff}]
+        --string    source string
+        --add       add the string to the source
+        --version   version number
+
+@CITATION@
+
+]]>
+    </help>
+    
+    <expand macro="citations"/>
+    
+</tool>
+
