@@ -3,6 +3,8 @@
     <xml name="requirements">
         <requirements>
             <requirement type="python-module">gffutils</requirement>
+            <requirement type="python-module">Bio</requirement>
+            <requirement type="python-module">BCBio</requirement>
         </requirements>
     </xml>
     
@@ -12,7 +14,7 @@
         </stdio>    
     </xml>
     
-    <token name="@VERSION@">0.0.0</token>
+    <token name="@VERSION@">0.0.1</token>
     
     <token name="@CITATION@">
 <![CDATA[

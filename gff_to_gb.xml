@@ -55,34 +55,33 @@
 
 **Overview**
 
-Gff_source_editing is designed to manipulate the source data of a GFF file to prepare it for the gff_to_db tool.
-The gff_to_db tool will use this new source as primary key. Therefore it has to be distinct from other source entries in the database.
-You can use db_to_gff and check if a source string is already in use.
-It can add a string to the source data or replace the whole source data with a new string.
+Gff_to_gb can transform a GFF file and its corresponding fasta file into a new GenBank file.
+It uses 3 separate editing and validation functions in order to validate the input files and manipulates the data if necessary.
+This is due to GenBank not handling nested features and GenBank features only allowed to be 16 characters long.
+It also checks if the GFF files have corresponding sequences.
 
 ------
 
 **Input**
 
-The input file has to be a GFF file.
+The first input file has to be a GFF file.
+The second input file has to be a fasta file with sequences associated to the GFF file.
 
 ------
 
 **Output**
 
-The output will be a GFF file.
+The output will be a GenBank file.
 
 ------
 
-**gff_source_editing parameter list**
+**gff_to_gb parameter list**
 
-The standalone, command-line version of gff_source_editing uses the following parameters::
+The standalone, command-line version of gff_to_gb uses the following parameters::
 
-        --old_gff   [input GFF file name {gff}]
-        --new_gff   [output GFF file name {gff}]
-        --string    source string
-        --add       add the string to the source
-        --version   version number
+        --gff       [input GFF file name {gff}]
+        --fasta     [input fasta file name {fna/ffn/faa}]
+        --genbank   [output GenBank file name {gbk}]
 
 @CITATION@
 
