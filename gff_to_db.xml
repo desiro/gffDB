@@ -62,7 +62,7 @@
 
 **Overview**
 
-gff_to_db is designed to construct uniform databases out of one or more GFF files.
+Gff_to_db is designed to construct uniform databases out of one or more GFF files.
 For the construction of this databases it uses the python module gffutils_.
 
 .. _gffutils: http://pythonhosted.org/gffutils/contents.html
@@ -77,7 +77,7 @@ If additionally given a database, the tool will add the GFF data to this databas
 
 .. class:: warningmark
 
-gff_to_db uses the source field of the GFF file as the primary key.
+Gff_to_db uses the source field of the GFF file as the primary key.
 Therefore, when adding to an existing database, make sure that the source of the gff file isn't already in the database.
 For this you can use db_to_gff and search for the source you want to add.
 If you want do change the source of the GFF file use gff_source_editing.
