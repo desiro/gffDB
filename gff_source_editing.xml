@@ -40,7 +40,7 @@
         <param name="string" type="text" label="Source string" help="(--string) This string will be added to or replace the source data. Can't contain any whitespace character or similar." >
             <expand macro="sanitize_query" />
         </param>
-        <param name="add" type="boolean" checked="true" truevalue="--add" falsevalue="" label="Add source string" help="(--add) Replace or add source string." />
+        <param name="add" type="boolean" checked="true" truevalue="--add" falsevalue="" label="Add source string" help="(--add) Add the source string to the existing one or replace the whole string." />
     </inputs>
     
     <outputs>

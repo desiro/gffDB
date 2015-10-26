@@ -5,6 +5,8 @@
             <requirement type="python-module">gffutils</requirement>
             <requirement type="python-module">Bio</requirement>
             <requirement type="python-module">BCBio</requirement>
+            <requirement type="python-module">gag</requirement>
+            <requirement type="package">tbl2asn</requirement>
         </requirements>
     </xml>
     
@@ -25,7 +27,7 @@
 If you use the gff sqlite tool in your research, please cite the following:
 ]]>
     </token>
-
+    
     <xml name="citations">
         <citations>
             <citation type="bibtex">
@@ -36,6 +38,7 @@ If you use the gff sqlite tool in your research, please cite the following:
                     url = {https://github.com/bgruening/galaxytools}
                 }
             </citation>
+            <yield />
         </citations>
     </xml>
     

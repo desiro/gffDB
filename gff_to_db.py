@@ -11,6 +11,9 @@ Usage:
 Source:
     https://github.com/desiro/gffDB/blob/master/gff_to_db.py
 
+Reference:
+    http://pythonhosted.org/gffutils/contents.html
+
 """
 import os
 import gffutils
@@ -19,7 +22,7 @@ import sys
 
 
 def main(gffFile, inputDB, newDB):
-    # creating a new database or adding to an excising one
+    # creating a new database or adding to an existing one
     if inputDB:
         addToDB(gffFile,inputDB)
     else:

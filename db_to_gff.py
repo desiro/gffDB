@@ -11,6 +11,9 @@ Usage:
 Source:
     https://github.com/desiro/gffDB/blob/master/db_to_gff.py
 
+Reference:
+    http://pythonhosted.org/gffutils/contents.html
+
 """
 import gffutils
 import argparse
