@@ -6,6 +6,7 @@
             <requirement type="python-module">Bio</requirement>
             <requirement type="python-module">BCBio</requirement>
             <requirement type="python-module">gag</requirement>
+            <requirement type="python-module">sqlite3</requirement>
             <requirement type="package">tbl2asn</requirement>
         </requirements>
     </xml>

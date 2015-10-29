@@ -42,7 +42,7 @@
     <inputs>
         <param name="tbl_in" type="data" format="tabular" label="Input tbl file" help="Input tbl file with location and typ of features." />
         <param name="fasta_in" type="data" format="fasta" label="Input fasta file" help="Input fasta file with genome data." />
-        <param name="sbt_in" type="data" format="sbt" optional="True" label="Input sbt file" help="Input sbt file with template data." />
+        <param name="sbt_in" type="data" format="txt" optional="True" label="Input sbt file" help="Input sbt file with template data." />
         <param name="file_type" type="select" multiple="False" label="Fasta file format." >
             <option value="s" selected="True" > Fasta Set </option>
             <option value="l" > Fasta + Gap Alignment </option>
@@ -57,7 +57,7 @@
     </inputs>
     
     <outputs>
-        <data name="gbf_out" format="tabular" from_work_dir="./ncbi_tbl_temp/temp_file_tbl2asn.gbf" label="GBF data of ${tool.name} on ${on_string}" >
+        <data name="gbf_out" format="genbank" from_work_dir="./ncbi_tbl_temp/temp_file_tbl2asn.gbf" label="GBF data of ${tool.name} on ${on_string}" >
             <filter>'b' in verify</filter>
         </data>
         <data name="val_out" format="txt" from_work_dir="./ncbi_tbl_temp/temp_file_tbl2asn.val" label="validation file of ${tool.name} on ${on_string}" >
@@ -67,12 +67,12 @@
     
     <tests>
         <test>
-            <param name="fasta_in" value="FlyBase.fsa" />
-            <param name="tbl_in" value="FlyBase.tbl" />
+            <param name="fasta_in" value="FlyBase.fsa" ftype="fasta" />
+            <param name="tbl_in" value="FlyBase.tbl" ftype="tabular" />
             <param name="file_type" value="s" />
             <param name="verify" value="v,b" />
-            <output name="gbf_out" file="FlyBase.gbf" compare="sim_size" />
-            <output name="val_out" file="FlyBase.val" />
+            <output name="gbf_out" file="FlyBase.gbf" ftype="genbank" line_diff="1"/>
+            <output name="val_out" file="FlyBase.val" ftpye="txt" />
         </test>
     </tests>
     

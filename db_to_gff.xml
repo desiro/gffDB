@@ -139,7 +139,7 @@
 
 **Overview**
 
-db_to_gff is designed to access a with gff_to_db created sqlite database.
+Db_to_gff is designed to access a with gff_to_db created sqlite database.
 It has three different search approaches and can extract the original GFF files.
 For this it uses the python module gffutils_.
 
